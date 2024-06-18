@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Albums</title>
+</head>
+<body>
+    
+    <form action="/guardarAlbum" method="post">
+        <label>Título:</label>
+        <input type="text" name="txtTitulo" required>
+ 
+        <label>Artista:</label>
+        <input type="text" name="txtArtista" required>
+
+        <label>Año:</label>
+        <input type="number" name="txtAnio" required>
+
+        <button type="submit">Guardar Álbum</button>
+    </form>
+
+    <br><br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Álbum</th>
+                <th>Artista</th>
+                <th>Año</th>
+                <th>Operaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for album in albums %}
+            <tr>
+                <td>{{ album[0] }}</td>
+                <td>{{ album[1] }}</td>
+                <td>{{ album[2] }}</td>
+                <td>{{ album[3] }}</td>
+                <td> <a href="#">Editar</a></td>
+                <td> <a href="#">Eliminar</a></td>
+                
+                </td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
