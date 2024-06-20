@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Consultar Médicos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: deepskyblue;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 7px 13px 37px deepskyblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">AppMedica</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/registro">Registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/consultar_medicos">Consultar Médicos</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="table-container">
+            <h4>Lista de Médicos</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>RFC</th>
+                        <th>Nombre</th>
+                        <th>Cédula</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medico in medicos %}
+                    <tr>
+                        <td>{{ medico[1] }}</td>
+                        <td>{{ medico[2] }}</td>
+                        <td>{{ medico[3] }}</td>
+                        <td>{{ medico[4] }}</td>
+                        <td>{{ medico[6] }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_medico', id=medico[0]) }}" class="btn btn-primary">Editar</a>
+                            <a href="{{ url_for('ocultar_medico', id=medico[0]) }}" class="btn btn-danger">Ocultar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
