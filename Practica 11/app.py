@@ -6,7 +6,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'dbflask1'
-app.secret_key = 'your_secret_key' 
+app.secret_key = 'your_secret_key'  
 mysql = MySQL(app)
 
 @app.route('/')
@@ -23,14 +23,14 @@ def index():
 @app.route('/guardarAlbum', methods=['POST'])
 def guardarAlbum():
     if request.method == 'POST':
-        Titulo = request.form['txtTitulo']
-        Artista = request.form['txtArtista']
-        Año = request.form['txtAnio']
+        FTitulo = request.form['txtTitulo']
+        FArtista = request.form['txtArtista']
+        FAño = request.form['txtAnio']
         try:
             cursor = mysql.connection.cursor()
-            cursor.execute("INSERT INTO albums (titulo, artista, anio) VALUES (%s, %s, %s)", (Titulo, Artista, Año))
+            cursor.execute("INSERT INTO albums (titulo, artista, anio) VALUES (%s, %s, %s)", (FTitulo, FArtista, FAño))
             mysql.connection.commit()
-            flash('Álbum guardado correctamente')
+            flash('Álbum Guardado Correctamente')
             return redirect(url_for('index'))
         except Exception as e:
             print(e)
@@ -41,7 +41,7 @@ def guardarAlbum():
 def editar(id):
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM albums WHERE idAlbum=%s', [id])
+        cursor.execute('SELECT * FROM albums WHERE id=%s', [id])
         albumE = cursor.fetchone()
         return render_template('editar.html', album=albumE)
     except Exception as e:
@@ -57,7 +57,7 @@ def ActualizarAlbum(id):
             Fanio = request.form['txtAnio']
 
             cursor = mysql.connection.cursor()
-            cursor.execute('UPDATE albums SET titulo=%s, artista=%s, anio=%s WHERE idAlbum=%s', (Ftitulo, Fartista, Fanio, id))
+            cursor.execute('UPDATE albums SET titulo=%s, artista=%s, anio=%s WHERE id=%s', (Ftitulo, Fartista, Fanio, id))
             mysql.connection.commit()
             flash('Álbum editado correctamente')
             return redirect(url_for('index'))
@@ -65,6 +65,19 @@ def ActualizarAlbum(id):
             print(e)
             flash('Error al actualizar el álbum', 'error')
             return redirect(url_for('editar', id=id))
+
+@app.route('/EliminarAlbum/<int:id>')
+def eliminar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('DELETE FROM albums WHERE id=%s', [id])
+        mysql.connection.commit()
+        flash('Álbum eliminado')
+        return redirect(url_for('index'))
+    except Exception as e:
+        print(e)
+        flash('Error al eliminar álbum', 'error')
+        return redirect(url_for('index'))
 
 @app.errorhandler(404)
 def paginanotfound(e):

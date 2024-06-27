@@ -6,26 +6,35 @@
     <title>Formulario Albums</title>
 </head>
 <body>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+{% endwith %}
+
+    <h1>FORMULARIO</h1>
     <form action="/guardarAlbum" method="post">
-        <label for="txtTitulo">Título:</label>
-        <input type="text" id="txtTitulo" name="txtTitulo" required>
+        <label>Título:</label>
+        <input type="text" name="txtTitulo" required>
  
-        <label for="txtArtista">Artista:</label>
-        <input type="text" id="txtArtista" name="txtArtista" required>
+        <label>Artista:</label>
+        <input type="text" name="txtArtista" required>
 
-        <label for="txtAnio">Año:</label>
-        <input type="number" id="txtAnio" name="txtAnio" required>
+        <label>Año:</label>
+        <input type="number" name="txtAnio" required>
 
-        <button type="submit">Guardar Álbum</button>
+        <button type="submit" class="btn btn-primary">Guardar Álbum</button>
     </form>
 
     <br><br><br>
-
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Álbum</th>
+                <th>Título</th>
                 <th>Artista</th>
                 <th>Año</th>
                 <th>Operaciones</th>
@@ -39,7 +48,7 @@
                 <td>{{ album[2] }}</td>
                 <td>{{ album[3] }}</td>
                 <td><a href="{{ url_for('editar', id=album[0]) }}">Editar</a></td>
-                <td><a href="/eliminar/{{ album[0] }}">Eliminar</a></td>
+                <td><a href="{{ url_for('eliminar', id=album[0]) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este álbum?');">Eliminar</a></td>
             </tr>
             {% endfor %}
         </tbody>
