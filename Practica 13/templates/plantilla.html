@@ -1,0 +1,66 @@
+{% extends "plantilla.html" %}
+
+{% block body %}
+
+<title>Formulario Albums</title>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for messages in messages %}
+        <div class="alert alert-warning alert-dismissible fade show mt-5" role="alert">
+            <strong>{{ messages }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="row">
+    <div class="col-md-5">
+
+    </div>
+    <div class="col-md-7">
+
+    </div>
+</div>
+
+<h1>FORMULARIO</h1>
+<form action="/guardarAlbum" method="post">
+    <label>Título:</label>
+    <input type="text" name="txtTitulo" required>
+ 
+    <label>Artista:</label>
+    <input type="text" name="txtArtista" required>
+
+    <label>Año:</label>
+    <input type="number" name="txtAnio" required>
+
+    <button type="submit" class="btn btn-primary">Guardar Álbum</button>
+</form>
+
+<br><br><br>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Artista</th>
+            <th>Año</th>
+            <th>Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for album in albums %}
+        <tr>
+            <td>{{ album[0] }}</td>
+            <td>{{ album[1] }}</td>
+            <td>{{ album[2] }}</td>
+            <td>{{ album[3] }}</td>
+            <td><a href="{{ url_for('editar', id=album[0]) }}">Editar</a></td>
+            <td><a href="{{ url_for('eliminar', id=album[0]) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este álbum?');">Eliminar</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
